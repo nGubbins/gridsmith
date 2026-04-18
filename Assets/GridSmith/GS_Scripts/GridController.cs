@@ -20,6 +20,7 @@ public class GridController : MonoBehaviour
     public Vector2 Offset;
     public bool LoadOnStart = true;
     public GameObject[,] GridObjects;
+    public GSTileData[,] GridData;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class GridController : MonoBehaviour
         int dimX = Dimensions.x;
         int dimY = Dimensions.y;
         GridObjects = new GameObject[dimX,dimY];
+        GridData = new GSTileData[dimX, dimY];
 
         for(int i = 0; i < dimX; ++i)
         {
@@ -54,6 +56,11 @@ public class GridController : MonoBehaviour
                 }
                 curObj.transform.parent = gameObject.transform;
                 GridObjects[i,j] = curObj;
+
+                //create associated node data
+                GSTileData newNode = new GSTileData(i, j);
+            //print(newNode.name);
+                GridData[i,j] = newNode;
             }
         }
     }
@@ -83,6 +90,35 @@ public class GridController : MonoBehaviour
         GridObjects[tile2.x, tile2.y] = obj1;
         GridObjects[tile1.x, tile1.y] = obj2;
 
+    //print("tile 1 to move: " + GridData[tile1.x, tile1.y].name);
+    //print("tile 2 to move: " + GridData[tile2.x, tile2.y].name);
+
+        //swap node data
+
+        //store name and startpoint of each tile
+       // string tempName1 = GridData[tile1.x, tile1.y].name;
+       // print("tile 1: " + tempName1);
+        //Vector2Int tempStartpoint1 = GridData[tile1.x, tile1.y].startpoint;
+       // string tempName2 = GridData[tile2.x, tile2.y].name;
+        //print("tile 2: " + tempName2);
+        //Vector2Int tempStartpoint2 = GridData[tile2.x, tile2.y].startpoint;
+
+        GSTileData tempNode = GridData[tile1.x, tile1.y];
+        GridData[tile1.x, tile1.y] = GridData[tile2.x, tile2.y];
+        GridData[tile2.x, tile2.y] = tempNode;
+
+        //now the tiles have swapped, set name and startpoint back
+       // GridData[tile2.x, tile2.y].name = tempName1;
+        //GridData[tile2.x, tile2.y].startpoint = tempStartpoint1;
+
+        //GridData[tile1.x, tile1.y].name = tempName2;
+        //GridData[tile1.x, tile1.y].startpoint = tempStartpoint2;
+
+
+
+   // print("Tile Started At: " + GridData[tile1.x, tile1.y].startpoint + " moved from " + tile2 + " to: " + GridData[tile1.x, tile1.y].coordinates);
+    //print("Tile Tarted At: " + GridData[tile2.x, tile2.y].startpoint + " moved from " + tile1 + " to: " + GridData[tile2.x, tile2.y].coordinates);
+
         return true;
     }
 
@@ -91,8 +127,6 @@ public class GridController : MonoBehaviour
         //ToDo: Swap given objects
         //update GirdObjects[] to match new positions
     } */
-
-    //ToDo: Group Select & Group Swap
 
 }
 }
